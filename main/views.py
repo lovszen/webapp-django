@@ -134,7 +134,7 @@ def generar_pdf_alumno(request, id):
         email.attach(f'ficha_{alumno.nombre}_{alumno.apellido}.pdf', buffer.getvalue(), 'application/pdf')
         email.send()
         
-        messages.success(request, f'✅ PDF enviado REALMENTE a {request.user.email}')
+        messages.success(request, f' PDF enviado a {request.user.email}')
         return redirect('dashboard')
     
     except Exception as e:
