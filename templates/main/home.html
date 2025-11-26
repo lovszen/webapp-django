@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+        <h1 class="display-4 mb-4">Sistema de Gestión Académica</h1>
+        <p class="lead mb-5">Gestiona tus alumnos de manera eficiente</p>
+        
+        {% if not user.is_authenticated %}
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <a href="{% url 'registro' %}" class="btn btn-success btn-lg px-4 gap-3">Registrarse</a>
+            <a href="{% url 'login' %}" class="btn btn-primary btn-lg px-4">Ingresar</a>
+        </div>
+        {% else %}
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <a href="{% url 'dashboard' %}" class="btn btn-success btn-lg px-4">Ir al Dashboard</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
