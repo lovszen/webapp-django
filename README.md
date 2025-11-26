@@ -1,4 +1,4 @@
-# 🎓 Sistema de Gestión Académica - Django
+# Sistema de Gestión Académica - Django
 
 ## Descripción del Proyecto
 Sistema web desarrollado en Django para la gestión de alumnos, generación de reportes en PDF y búsqueda de alumnos.
