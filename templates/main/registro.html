@@ -5,13 +5,27 @@
     <div class="col-md-6">
         <div class="academic-card p-4">
             <h2 class="text-center mb-4">Registro</h2>
-            <form method="post">
+            
+            <form method="POST">
                 {% csrf_token %}
-                {{ form.as_p }}
+                
+                {% for field in form %}
+                <div class="mb-3">
+                    <label class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <div class="text-danger">
+                        {{ field.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                
                 <button type="submit" class="btn btn-success w-100">Registrarse</button>
             </form>
+            
             <p class="text-center mt-3">
-                ¿Ya tienes cuenta? <a href="{% url 'login' %}">Ingresar aquí</a>
+                ¿Ya tenés cuenta? <a href="{% url 'login' %}">Ingresá aquí</a>
             </p>
         </div>
     </div>
