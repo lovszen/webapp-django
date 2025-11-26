@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ titulo }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card-modern p-4 fade-in-up">
+            <div class="d-flex align-items-center mb-4">
+                <div class="avatar avatar-primary me-3">
+                    {{ titulo|first }}
+                </div>
+                <div>
+                    <h2 class="h4 fw-bold mb-0">{{ titulo }}</h2>
+                    <p class="text-muted mb-0">Completa la información del alumno</p>
+                </div>
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+                
+                <div class="row">
+                    {% for field in form %}
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ field.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="d-flex gap-3 justify-content-end mt-4">
+                    <a href="{% url 'dashboard' %}" class="btn btn-outline-custom">
+                        Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-primary-custom">
+                        Guardar Alumno
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const inputs = document.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+        input.classList.add('form-modern');
+    });
+});
+</script>
+{% endblock %}

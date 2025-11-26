@@ -1,21 +1,70 @@
 {% extends 'base.html' %}
 
+{% block title %}Inicio - Sistema Académico{% endblock %}
+
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-8 text-center">
-        <h1 class="display-4 mb-4">Sistema de Gestión Académica</h1>
-        <p class="lead mb-5">Gestiona tus alumnos de manera eficiente</p>
+<div class="row align-items-center min-vh-80">
+    <div class="col-lg-6 fade-in-up">
+        <h1 class="display-5 fw-bold mb-4">
+            Gestión Académica 
+            <span class="text-primary">Eficiente</span>
+        </h1>
+        <p class="lead mb-4 text-muted">
+            Sistema integral para la gestión de alumnos, generación de reportes 
+            y comunicación educativa.
+        </p>
         
         {% if not user.is_authenticated %}
-        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-            <a href="{% url 'registro' %}" class="btn btn-success btn-lg px-4 gap-3">Registrarse</a>
-            <a href="{% url 'login' %}" class="btn btn-primary btn-lg px-4">Ingresar</a>
+        <div class="d-flex gap-3 flex-wrap">
+            <a href="{% url 'registro' %}" class="btn btn-primary-custom btn-lg">
+                Comenzar Ahora
+            </a>
+            <a href="{% url 'login' %}" class="btn btn-outline-custom btn-lg">
+                Acceder
+            </a>
         </div>
         {% else %}
-        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-            <a href="{% url 'dashboard' %}" class="btn btn-success btn-lg px-4">Ir al Dashboard</a>
+        <div class="d-flex gap-3 flex-wrap">
+            <a href="{% url 'dashboard' %}" class="btn btn-primary-custom btn-lg">
+                Ir al Dashboard
+            </a>
+            <a href="{% url 'scraper_buscar' %}" class="btn btn-outline-custom btn-lg">
+                Búsqueda Educativa
+            </a>
         </div>
         {% endif %}
+    </div>
+    
+    <div class="col-lg-6 text-center fade-in-up" style="animation-delay: 0.2s;">
+        <div class="card-modern p-5">
+            <h4 class="fw-bold mb-4">Características Principales</h4>
+            <div class="row text-start">
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex align-items-center">
+                        <span class="me-3 text-primary">●</span>
+                        <span>Gestión de Alumnos</span>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex align-items-center">
+                        <span class="me-3 text-primary">●</span>
+                        <span>Reportes PDF</span>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex align-items-center">
+                        <span class="me-3 text-primary">●</span>
+                        <span>Envío por Email</span>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="d-flex align-items-center">
+                        <span class="me-3 text-primary">●</span>
+                        <span>Búsqueda Inteligente</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
