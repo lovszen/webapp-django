@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="glass-card p-4">
+            <h2 class="text-center mb-4">Búsqueda Educativa</h2>
+            
+            <form method="get" class="mb-4">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control-modern" 
+                           placeholder="Buscar concepto educativo..." value="{{ query }}">
+                    <button type="submit" class="btn btn-modern">Buscar</button>
+                </div>
+            </form>
+
+            {% if resultados %}
+                {% for resultado in resultados %}
+                <div class="glass-card p-3 mb-3">
+                    <h5>{{ resultado.titulo }}</h5>
+                    <p>{{ resultado.contenido }}</p>
+                    <small class="text-muted">Fuente: {{ resultado.fuente }}</small>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
