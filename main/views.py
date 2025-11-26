@@ -19,13 +19,13 @@ def registro_view(request):
             user = form.save()
             send_mail(
                 '¡Bienvenido/a al Sistema Académico!',
-                f'Hola {user.username},\n\nTe has registrado exitosamente en nuestro sistema de gestión académica.\n\nSaludos cordiales,\nEquipo del Sistema',
+                f'Hola {user.username},\n\nTe has registrado exitosamente.\n\nSaludos,\nEquipo del Sistema',
                 settings.DEFAULT_FROM_EMAIL,
                 [user.email],
                 fail_silently=False,
             )
             login(request, user)
-            messages.success(request, '¡Registro exitoso! Se envió un email de bienvenida.')
+            messages.success(request, '¡Registro exitoso! Email enviado.')
             return redirect('dashboard')
     else:
         form = RegistroForm()
@@ -38,7 +38,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, f'¡Bienvenido/a de nuevo, {user.username}!')
+            messages.success(request, f'¡Bienvenido/a {user.username}!')
             return redirect('dashboard')
         else:
             messages.error(request, 'Usuario o contraseña incorrectos')
@@ -46,7 +46,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    messages.success(request, 'Has cerrado sesión correctamente')
+    messages.success(request, 'Sesión cerrada')
     return redirect('home')
 
 @login_required
@@ -62,7 +62,7 @@ def agregar_alumno(request):
             alumno = form.save(commit=False)
             alumno.usuario = request.user
             alumno.save()
-            messages.success(request, 'Alumno agregado correctamente')
+            messages.success(request, 'Alumno agregado')
             return redirect('dashboard')
     else:
         form = AlumnoForm()
@@ -75,7 +75,7 @@ def editar_alumno(request, id):
         form = AlumnoForm(request.POST, instance=alumno)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Alumno actualizado correctamente')
+            messages.success(request, 'Alumno actualizado')
             return redirect('dashboard')
     else:
         form = AlumnoForm(instance=alumno)
@@ -86,7 +86,7 @@ def eliminar_alumno(request, id):
     alumno = get_object_or_404(Alumno, id=id, usuario=request.user)
     if request.method == 'POST':
         alumno.delete()
-        messages.success(request, 'Alumno eliminado correctamente')
+        messages.success(request, 'Alumno eliminado')
         return redirect('dashboard')
     return render(request, 'main/eliminar_alumno.html', {'alumno': alumno})
 
@@ -99,7 +99,7 @@ def generar_pdf_alumno(request, id):
         p = canvas.Canvas(buffer)
         
         p.setFont("Helvetica-Bold", 16)
-        p.drawString(100, 800, "SISTEMA DE GESTIÓN ACADÉMICA")
+        p.drawString(100, 800, "SISTEMA ACADÉMICO")
         p.drawString(100, 780, "FICHA DEL ALUMNO")
         p.line(100, 775, 500, 775)
         
@@ -109,17 +109,14 @@ def generar_pdf_alumno(request, id):
         
         if alumno.dni:
             p.drawString(100, 710, f"DNI: {alumno.dni}")
-        
         if alumno.telefono:
             p.drawString(100, 690, f"Teléfono: {alumno.telefono}")
-        
         if alumno.carrera:
-            p.drawString(100, 670, f"Carrera/Curso: {alumno.carrera}")
-        
+            p.drawString(100, 670, f"Carrera: {alumno.carrera}")
         if alumno.fecha_nacimiento:
-            p.drawString(100, 650, f"Fecha Nacimiento: {alumno.fecha_nacimiento}")
+            p.drawString(100, 650, f"Nacimiento: {alumno.fecha_nacimiento}")
         
-        p.drawString(100, 630, f"Fecha Inscripción: {alumno.fecha_inscripcion}")
+        p.drawString(100, 630, f"Inscripción: {alumno.fecha_inscripcion}")
         p.drawString(100, 600, "Documento generado automáticamente")
         p.drawString(100, 580, f"Usuario: {request.user.username}")
         
@@ -129,22 +126,17 @@ def generar_pdf_alumno(request, id):
         
         email = EmailMessage(
             f'Ficha Académica - {alumno.nombre} {alumno.apellido}',
-            f'Estimado/a {request.user.username},\n\nAdjuntamos la ficha académica del alumno {alumno.nombre} {alumno.apellido}.\n\nSaludos cordiales,\nSistema de Gestión Académica',
+            f'Ficha del alumno {alumno.nombre} {alumno.apellido} adjunta.',
             settings.DEFAULT_FROM_EMAIL,
             [request.user.email],
         )
         
-        email.attach(
-            f'ficha_{alumno.nombre}_{alumno.apellido}.pdf',
-            buffer.getvalue(),
-            'application/pdf'
-        )
+        email.attach(f'ficha_{alumno.nombre}_{alumno.apellido}.pdf', buffer.getvalue(), 'application/pdf')
+        email.send()
         
-        email.send(fail_silently=False)
-        
-        messages.success(request, f'PDF enviado por correo a {request.user.email}')
+        messages.success(request, f'✅ PDF enviado REALMENTE a {request.user.email}')
         return redirect('dashboard')
     
     except Exception as e:
-        messages.error(request, f'Error al generar PDF: {str(e)}')
+        messages.error(request, f'Error: {str(e)}')
         return redirect('dashboard')

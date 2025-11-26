@@ -2,26 +2,45 @@
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="glass-card p-4">
-            <h2 class="text-center mb-4">Búsqueda Educativa</h2>
+    <div class="col-md-10">
+        <div class="card-modern p-4">
+            <h2 class="text-center mb-4">Buscar Alumnos</h2>
             
             <form method="get" class="mb-4">
                 <div class="input-group">
-                    <input type="text" name="q" class="form-control-modern" 
-                           placeholder="Buscar concepto educativo..." value="{{ query }}">
-                    <button type="submit" class="btn btn-modern">Buscar</button>
+                    <input type="text" name="q" class="form-modern" 
+                           placeholder="Buscar por nombre, apellido o carrera..." value="{{ query }}">
+                    <button type="submit" class="btn btn-primary-custom">Buscar</button>
                 </div>
             </form>
 
             {% if resultados %}
-                {% for resultado in resultados %}
-                <div class="glass-card p-3 mb-3">
-                    <h5>{{ resultado.titulo }}</h5>
-                    <p>{{ resultado.contenido }}</p>
-                    <small class="text-muted">Fuente: {{ resultado.fuente }}</small>
+                <div class="mt-4">
+                    <h5>Resultados encontrados: {{ resultados|length }}</h5>
+                    {% for resultado in resultados %}
+                    <div class="card-modern p-3 mb-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="mb-2">{{ resultado.titulo }}</h5>
+                                <p class="mb-2">{{ resultado.contenido }}</p>
+                                <small class="text-muted">Fuente: {{ resultado.fuente }}</small>
+                            </div>
+                            <div class="btn-group">
+                                <a href="{% url 'editar_alumno' resultado.alumno.id %}" class="btn btn-sm btn-outline-custom">Editar</a>
+                                <a href="{% url 'generar_pdf_alumno' resultado.alumno.id %}" class="btn btn-sm btn-secondary-custom">PDF</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
+            {% elif query %}
+                <div class="text-center p-4">
+                    <p class="text-muted">No se encontraron alumnos para "{{ query }}"</p>
+                </div>
+            {% else %}
+                <div class="text-center p-4">
+                    <p class="text-muted">Ingresa un nombre, apellido o carrera para buscar</p>
+                </div>
             {% endif %}
         </div>
     </div>
