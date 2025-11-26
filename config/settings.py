@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-w(s54w$_set2%e7=t#n%^)pi=_^q+x-nha%55qiby34b%-796&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['webapp-django.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -139,8 +139,8 @@ LOGIN_URL = 'login'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 465  # ← Cambio aquí
-EMAIL_USE_SSL = True  # ← Cambio aquí (era EMAIL_USE_TLS)
+EMAIL_PORT = 465 
+EMAIL_USE_SSL = True  
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')
